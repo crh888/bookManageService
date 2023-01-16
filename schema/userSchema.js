@@ -26,3 +26,13 @@ exports.login_schema = {
     password: Joi.string().pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{9,16}$/).required()
   }
 }
+
+// 找回密码的表单验证
+exports.retrieve_schema = {
+  body: {
+    account: Joi.string().email().required(),
+    newPwd: Joi.string().pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{9,16}$/).required(),
+    valiCode: Joi.string().max(4).required(),
+    secretCode: Joi.string().required()
+  }
+}

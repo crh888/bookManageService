@@ -7,14 +7,17 @@ const expressJWT = require('express-jwt')
 const { sendMail } = require('../utils/mail')
 const { secretKey } = require('../config')
 
+// 设置为随机生成 4 位 小写字母
+const getCode = customAlphabet(lowercase, 4)
+
 // 发送验证码的回调
 exports.getVerCode = async (req, res) => {
   try {
-    // 设置为随机生成 4 位 小写字母
-    const getCode = customAlphabet(lowercase, 4)
+    // 随机生成验证码
     const valiCode = await getCode()
     // 返回加密后的验证码
     const secretCode = jwt.sign({ valiCode }, secretKey, { expiresIn: '120s' })
+    // 发送邮件
     await sendMail(req.body.account, '验证码不要泄露出去哦，有效期3分钟！', valiCode)
     res.send({
       status: 0,
@@ -106,11 +109,36 @@ exports.login = async (req, res) => {
       data: {
         id: selRes[0].id,
         identity: selRes[0].identity,
-        token
+        token: 'Bearer ' + token
       }
     })
-    console.log(userinfo);
   } catch (err) {
     res.send(err)
+  }
+}
+
+// 找回密码的回调函数
+exports.retrievePwd = async (req, res) => {
+  try {
+    // 检查验证码是否正确
+    const { valiCode } = await jwt.verify(req.body.secretCode, secretKey)
+    if (valiCode !== req.body.valiCode) return res.cc('验证码错误')
+    // 检查账号是否正确
+    const selSql = 'SELECT * FROM account WHERE account = ?'
+    const [selRes] = await db.query(selSql, req.body.account)
+    if (selSql.length === 0) return res.cc('账号错误')
+    // 比较新旧密码是否相同
+    const compareRes = await bcrypt.compare(req.body.newPwd, selRes[0].password)
+    if (compareRes) return res.cc('新密码不能和旧密码相同')
+    // 加密密码
+    const hashPwd = await bcrypt.hash(req.body.newPwd, 10)
+    // 修改密码
+    const updSql = 'UPDATE account SET ? WHERE id = ?'
+    const pwdInfo = { password: hashPwd }
+    const [updRes] = await db.query(updSql, [pwdInfo, selRes[0].id])
+    if (updRes.affectedRows !== 1) return res.cc('修改密码失败')
+    res.cc('修改密码成功', 0)
+  } catch (err) {
+    res.cc(err)
   }
 }
