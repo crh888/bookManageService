@@ -1,5 +1,6 @@
 const Joi = require('joi')
 
+// 注册的表单验证
 exports.register_schema = {
   body: {
     account: Joi.string().email().required(),
@@ -11,8 +12,17 @@ exports.register_schema = {
   }
 }
 
+// 邮箱号码的表单验证
 exports.getValiCode_schema = {
   body: {
     account: Joi.string().email().required()
+  }
+}
+
+// 登录的表单验证
+exports.login_schema = {
+  body: {
+    account: Joi.string().email().required(),
+    password: Joi.string().pattern(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{9,16}$/).required()
   }
 }

@@ -4,7 +4,6 @@ const { customAlphabet } = require('nanoid/async')
 const { lowercase } = require('nanoid-dictionary')
 const jwt = require('jsonwebtoken')
 const expressJWT = require('express-jwt')
-
 const { sendMail } = require('../utils/mail')
 const { secretKey } = require('../config')
 
@@ -83,5 +82,35 @@ exports.regsiter = async (req, res) => {
     } catch (err) {
       res.cc(err)
     }
+  }
+}
+
+// 登录的回调函数
+exports.login = async (req, res) => {
+  try {
+    const selSql = 'SELECT * FROM account WHERE account = ?'
+    const [selRes] = await db.query(selSql, req.body.account)
+    if (selRes.length !== 1) return res.cc('账号错误')
+    // 对比用户填写的密码和服务器存储的密码
+    const compareRes = await bcrypt.compare(req.body.password, selRes[0].password)
+    if (!compareRes) return res.cc('密码错误')
+    const userinfo = {
+      ...selRes[0],
+      password: ''
+    }
+    // 生成token
+    const token = jwt.sign(userinfo, secretKey, { expiresIn: '24h' })
+    res.send({
+      status: 0,
+      msg: '登录成功',
+      data: {
+        id: selRes[0].id,
+        identity: selRes[0].identity,
+        token
+      }
+    })
+    console.log(userinfo);
+  } catch (err) {
+    res.send(err)
   }
 }
