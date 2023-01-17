@@ -1,9 +1,12 @@
 const express = require('express')
 const path = require('path')
 const cors = require('cors')
-const Joi =require('joi')
+const Joi = require('joi')
+const {expressjwt: expressJWT} = require('express-jwt')
 
+const { secretKey } = require('./config')
 const userRouter = require('./router/user')
+const userInfoRouter = require('./router/userinfo')
 
 const app = express()
 
@@ -27,17 +30,31 @@ app.use((req, res, next) => {
   next()
 })
 
+// 配置解析Token的中间件
+app.use(expressJWT({
+  secret: secretKey,
+  algorithms: ['HS256']
+}).unless({
+  path: [/^\/api\//]
+}));
+
 // 挂载静态路由（头像和封面）
 app.use('avatar', express.static(path.join(__dirname, './public/avatar')))
-app.use('avatar', express.static(path.join(__dirname, './public/cover')))
+app.use('cover', express.static(path.join(__dirname, './public/cover')))
 
 // 挂载路由
 app.use('/api', userRouter)
+// 用户信息相关的路由
+app.use('/my', userInfoRouter)
 
 // 全局错误中间件
 app.use((err, req, res, next) => {
   // joi 数据验证错误
   if (err instanceof Joi.ValidationError) return res.cc(err)
+  // 捕获身份认证失败的错误
+  if (err.name === 'UnauthorizedError') return res.cc('身份认证失败');
+  // 未知错误
+  res.cc(err); 
 })
 
 
