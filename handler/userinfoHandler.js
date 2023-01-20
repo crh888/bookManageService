@@ -1,6 +1,8 @@
 const db = require('../db')
 const bcrypt = require('bcryptjs')
 
+const uplaodImg = require('../utils/uploadImg')
+
 exports.GetUserInfo = async (req, res) => {
   try {
     // console.log(req.auth)
@@ -49,6 +51,23 @@ exports.updatePwd = async (req, res) => {
     const [updRes] = await db.query(updSql, [info, req.auth.id])
     if (updRes.affectedRows !== 1) return res.cc('修改密码时发送错误')
     res.cc('修改密码成功', 0)
+  } catch (err) {
+    res.cc(err)
+  }
+}
+
+// 上传头像
+exports.uploadAvatar = (req, res) => {
+  uplaodImg(req, res, 'avatar')
+}
+
+// 更新用户头像
+exports.updateAvatar = async (req, res) => {
+  try {
+    const updSql = 'UPDATE userinfo SET ? WHERE account_id = ?'
+    const [updRes] = await db.query(updSql, [req.body, req.auth.id])
+    if (updRes.affectedRows !== 1) return res.cc('更新用户头像失败')
+    res.cc('更新用户头像成功', 0)
   } catch (err) {
     res.cc(err)
   }

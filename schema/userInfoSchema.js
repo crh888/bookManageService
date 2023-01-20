@@ -20,7 +20,14 @@ const updatePwd_schema = {
  }
 }
 
+const updateAvatar_schema = {
+  body: {
+    avatar: Joi.string().required()
+  }
+}
+
 module.exports = {
   updateUserInfo_schema,
-  updatePwd_schema
+  updatePwd_schema,
+  updateAvatar_schema
 }
