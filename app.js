@@ -7,6 +7,7 @@ const {expressjwt: expressJWT} = require('express-jwt')
 const { secretKey } = require('./config')
 const userRouter = require('./router/user')
 const userInfoRouter = require('./router/userinfo')
+const cateRouter = require('./router/category')
 
 const app = express()
 
@@ -46,6 +47,8 @@ app.use('cover', express.static(path.join(__dirname, './public/cover')))
 app.use('/api', userRouter)
 // 用户信息相关的路由
 app.use('/my', userInfoRouter)
+// 分类相关的路由
+app.use('/cate', cateRouter)
 
 // 全局错误中间件
 app.use((err, req, res, next) => {
