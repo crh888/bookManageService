@@ -14,6 +14,6 @@ router.post('/addcate', addCategory)
 // 修改分类信息
 router.post('/updatecate', expressJoi(update_schema), updateCategory)
 // 按照 id 删除分类信息
-router.get('/delete/:id', deleteCate)
+router.get('/delete/:id', expressJoi(idSchema), deleteCate)
 
 module.exports = router
