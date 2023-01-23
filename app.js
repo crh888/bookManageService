@@ -8,6 +8,7 @@ const { secretKey } = require('./config')
 const userRouter = require('./router/user')
 const userInfoRouter = require('./router/userinfo')
 const cateRouter = require('./router/category')
+const bookRouter = require('./router/book')
 
 const app = express()
 
@@ -49,6 +50,8 @@ app.use('/api', userRouter)
 app.use('/my', userInfoRouter)
 // 分类相关的路由
 app.use('/cate', cateRouter)
+// 图书相关的路由
+app.use('/book', bookRouter)
 
 // 全局错误中间件
 app.use((err, req, res, next) => {
