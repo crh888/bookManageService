@@ -9,6 +9,7 @@ const userRouter = require('./router/user')
 const userInfoRouter = require('./router/userinfo')
 const cateRouter = require('./router/category')
 const bookRouter = require('./router/book')
+const userManageRouter = require('./router/userManage')
 
 const app = express()
 
@@ -52,6 +53,8 @@ app.use('/my', userInfoRouter)
 app.use('/cate', cateRouter)
 // 图书相关的路由
 app.use('/book', bookRouter)
+// 用户管理相关路由
+app.use('/user', userManageRouter)
 
 // 全局错误中间件
 app.use((err, req, res, next) => {

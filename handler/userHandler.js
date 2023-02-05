@@ -94,6 +94,8 @@ exports.login = async (req, res) => {
     const selSql = 'SELECT * FROM account WHERE account = ?'
     const [selRes] = await db.query(selSql, req.body.account)
     if (selRes.length !== 1) return res.cc('账号错误')
+    // 判断账号是否可用
+    if (selRes[0].is_delete === 1) return res.cc('账号不存在')
     // 对比用户填写的密码和服务器存储的密码
     const compareRes = await bcrypt.compare(req.body.password, selRes[0].password)
     if (!compareRes) return res.cc('密码错误')
