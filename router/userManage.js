@@ -1,7 +1,7 @@
 const express = require('express')
 const expressJoi = require('@escook/express-joi')
 const { userList, addUser, deleteUser, retrievePwd, permissions } = require('../handler/usermanageHandle')
-const { register, deleteByid_schema } = require('../schema/userManageSchema')
+const { register, deleteByid_schema, alter_permission_schema } = require('../schema/userManageSchema')
 
 
 const router = express.Router()
@@ -15,6 +15,6 @@ router.post('/delete', expressJoi(deleteByid_schema), deleteUser)
 // 重置用户的密码
 router.post('/retrievepwd', expressJoi(deleteByid_schema), retrievePwd)
 // 修改用户权限
-router.post('/permission', permissions)
+router.post('/permission',expressJoi(alter_permission_schema), permissions)
 
 module.exports = router
