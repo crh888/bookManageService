@@ -5,8 +5,9 @@ const handlebars = require('handlebars')
 const mjml2html = require('mjml')
 const fs = require('fs')
 
-const authUser = 'bmadmin@1crh.cn'
-const authPass = 'book123'
+// 邮箱账号和密码
+const authUser = 'xxxxxx'
+const authPass = 'xxxxxx'
 
 // 使用handlebars对mjml文件进行编译
 const template = handlebars.compile(fs.readFileSync('./template/registerTem.mjml', 'utf8'))
