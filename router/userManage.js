@@ -1,6 +1,6 @@
 const express = require('express')
 const expressJoi = require('@escook/express-joi')
-const { userList, addUser, deleteUser, retrievePwd, permissions } = require('../handler/usermanageHandle')
+const { userList, addUser, deleteUser, retrievePwd, permissions } = require('../handler/userManageHandle')
 const { register, deleteByid_schema, alter_permission_schema } = require('../schema/userManageSchema')
 
 
