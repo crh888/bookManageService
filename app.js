@@ -39,12 +39,12 @@ app.use(expressJWT({
   secret: secretKey,
   algorithms: ['HS256']
 }).unless({
-  path: [/^\/api\//]
-}));
+  path: [/^\/(api)|(avatar)|(cover)\//]
+}))
 
 // 挂载静态路由（头像和封面）
-app.use('avatar', express.static(path.join(__dirname, './public/avatar')))
-app.use('cover', express.static(path.join(__dirname, './public/cover')))
+app.use('/avatar', express.static(path.join(__dirname, './public/avatar')))
+app.use('/cover', express.static(path.join(__dirname, './public/cover')))
 
 // 挂载路由
 app.use('/api', userRouter)
