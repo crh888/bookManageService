@@ -1,7 +1,15 @@
 const nodemailer = require('nodemailer')
+// 引入handlebars
+const handlebars = require('handlebars')
+// 引入mjml方法
+const mjml2html = require('mjml')
+const fs = require('fs')
 
 const authUser = 'bmadmin@1crh.cn'
 const authPass = 'book123'
+
+// 使用handlebars对mjml文件进行编译
+const template = handlebars.compile(fs.readFileSync('./template/registerTem.mjml', 'utf8'))
 
 const transporter = nodemailer.createTransport({
   host:'smtp.ym.163.com',
@@ -16,11 +24,13 @@ const transporter = nodemailer.createTransport({
 
 async function sendMail (address, title, content) {
   try {
+    const code = { code: content }
+    const html = mjml2html(template(code)).html
     let mailOption = {
       from: authUser,
       to: `${address}`,
       subject: `${title}`,
-      text: `${content}`
+      html
     }
     await transporter.sendMail(mailOption,).then((res) => {
       console.log('邮件发送:' + res.response)

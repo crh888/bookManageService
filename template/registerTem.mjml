@@ -1,0 +1,44 @@
+<mjml>
+  <mj-head>
+    <mj-title>验证码服务</mj-title>
+    <mj-attributes>
+      <mj-text line-height="120%"></mj-text>
+    </mj-attributes>
+    <mj-style inline="inline">
+      .header{
+      	display:flex;
+      	align-items: center;
+      }
+    </mj-style>
+  </mj-head>
+  <mj-body>
+    <mj-wrapper background-color="#000" border-radius="5px">
+      <mj-section css-class="header">
+        <mj-column width="40%">
+          <mj-image width="150px" src="https://i.328888.xyz/2023/02/08/3igi8.png"></mj-image>
+        </mj-column>
+        <mj-column padding="40px 10px">
+          <mj-text font-size="45px" align="center" color="#fff">验证码服务</mj-text>
+        </mj-column>
+      </mj-section>
+      <mj-section>
+        <mj-column>
+          <mj-divider border-color="orange"></mj-divider>
+        </mj-column>
+      </mj-section>
+      <mj-section padding="0 20px">
+        <mj-column>
+          <mj-text color="#fff" font-size="16px">用户您好</mj-text>
+          <mj-text color="#fff" font-size="16px">请不要将验证码随意转发他人以免造成您的个人账户被盗，此邮件为系统通知邮件请勿回复！您的验证码如下：</mj-text>
+          <mj-spacer height="10px"></mj-spacer>
+          <mj-button background-color="orange" font-size="20px">{{code}}</mj-button>
+        </mj-column>
+      </mj-section>
+      <mj-section>
+        <mj-column>
+          <mj-text color="#fff" font-size="16px" align="center">Copyright © 2023. 图书管理系统 All rights reserved.</mj-text>
+        </mj-column>
+      </mj-section>
+    </mj-wrapper>
+  </mj-body>
+</mjml>
