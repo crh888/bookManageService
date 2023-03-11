@@ -1,4 +1,4 @@
-> 请求根路径：http://127.0.0.1:9000/
+> 请求根路径：https://api.1crh.cn/bookserver/
 >
 > `status`：0代表请求成功 1代表失败
 >
@@ -218,7 +218,7 @@
 
 ### 用户修改密码
 
-1. 请求路径：`/my/updatepwd`
+1. 请求路径：`my/updatepwd`
 
 2. 请求方式：`POST`
 
@@ -518,6 +518,83 @@
    }
    ```
 
+### 按照书名查询图书（可模糊查询）
+
+1. 请求路径：`book/bookname/:bookname`
+
+2. 请求方式：`GET`
+
+3. 参数
+
+   | 参数     | 描述     | 备注 |
+   | -------- | -------- | ---- |
+   | bookname | 图书名称 |      |
+
+   返回实例
+
+   ```json
+   {
+       "status": 0,
+       "msg": "success",
+       "data": [
+           {
+               "book_id": 1,
+               "book_name": "JavaScript高级程序设计 第四版",
+               "cover": "",
+               "author": "马特·弗里斯比",
+               "cate_id": 2,
+               "is_delete": 0
+           }
+       ]
+   }
+   ```
+
+### 通过分类ID查询图书
+
+1. 请求路径：`book/booklist/:id`
+
+2. 请求方式：`GET`
+
+3. 参数
+
+   | 参数 | 描述   | 备注 |
+   | ---- | ------ | ---- |
+   | id   | 分类id |      |
+
+   返回实例
+
+   ```json
+   {
+       "status": 0,
+       "msg": "success",
+       "data": [
+           {
+               "book_id": 4,
+               "book_name": "钢铁是怎样练成的",
+               "cover": null,
+               "author": "奥斯托洛夫斯基",
+               "cate_id": 3,
+               "is_delete": 0
+           },
+           {
+               "book_id": 5,
+               "book_name": "十万个为什么",
+               "cover": null,
+               "author": "佚名",
+               "cate_id": 3,
+               "is_delete": 0
+           },
+           {
+               "book_id": 6,
+               "book_name": "狂人日记",
+               "cover": null,
+               "author": "鲁迅",
+               "cate_id": 3,
+               "is_delete": 0
+           }
+       ]
+   }
+
 ### 修改图书信息
 
 1. 请求路径：`book/update`
@@ -682,6 +759,41 @@
    }
    ```
 
+### 按邮箱查询用户
+
+1. 请求路径：`user/account`
+
+2. 请求方式：`POST`
+
+3. 参数
+
+   | 参数    | 描述       | 备注 |
+   | ------- | ---------- | ---- |
+   | account | 用户的邮箱 |      |
+
+   ```json
+   {
+       "account": "1367054158@qq.com"
+   }
+   ```
+
+   返回实例
+
+   ````json
+   {
+       "status": 0,
+       "msg": "success",
+       "data": {
+           "id": "10102",
+           "account": "1367054158@qq.com",
+           "nickname": "赵四",
+           "identity": 0
+       }
+   }
+   ````
+
+   
+
 ### 新增用户
 
 1. 请求路径：`user/adduser`
@@ -744,7 +856,7 @@
 
 ### 重置用户密码
 
-> 重置的密码为`Asd00000`
+> 重置的密码为`Asd000000`
 
 1. 请求路径：`user/retrievepwd`
 
