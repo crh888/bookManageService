@@ -2,7 +2,7 @@ const Joi = require('joi')
 
 const updateUserInfo_schema = {
   body: {
-    info_id: Joi.number().max(5),
+    info_id: Joi.number().max(100000),
     nickname: Joi.string().max(30),
     gender: Joi.number().max(1),
     birthday: Joi.string(),

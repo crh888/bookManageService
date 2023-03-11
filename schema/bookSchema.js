@@ -29,8 +29,15 @@ const addBook_schema = {
   }
 }
 
+const select_book_schema = {
+  params: {
+    bookname: name
+  }
+}
+
 module.exports = {
   idSchema,
   updateBookInfo_schema,
-  addBook_schema
+  addBook_schema,
+  select_book_schema
 }

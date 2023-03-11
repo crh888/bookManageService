@@ -17,6 +17,40 @@ exports.getBookList = async (req, res) => {
   }
 }
 
+// 按照书名获取图书
+exports.getBookByName = async (req, res) => {
+try {
+  const sql = `SELECT * FROM book WHERE book_name LIKE "%${req.params.bookname}%" AND is_delete = 0`
+  const [results] = await db.query(sql)
+  if (results.length === 0) return res.cc('无法查询出该图书，请更换关键词')
+  res.send({
+    status: 0,
+    msg: 'success',
+    data: results
+  })
+} catch (err) {
+  res.cc(err)
+}
+}
+
+// 按照分类查找图书列表
+exports.getBookListByName = async (req, res) => {
+  try {
+    const sql = `SELECT * FROM book WHERE cate_id = ${req.params.id} AND is_delete = 0`
+    const [results] = await db.query(sql)
+    if (results.length === 0) return res.cc('该分类下无图书')
+    res.send({
+      status: 0,
+      msg: 'success',
+      data: results
+    })
+  } catch (err) {
+    res.cc(err)
+    
+  }
+  
+}
+
 // 按 id 获取指定图书信息
 exports.getBookById = async (req, res) => {
   try {

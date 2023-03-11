@@ -29,8 +29,15 @@ const alter_permission_schema = {
   }
 }
 
+const user_account_schema = {
+  body: {
+    account
+  }
+}
+
 module.exports = {
   register,
   deleteByid_schema,
-  alter_permission_schema
+  alter_permission_schema,
+  user_account_schema
 }

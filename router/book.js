@@ -1,7 +1,7 @@
 const express = require('express')
 const expressJoi = require('@escook/express-joi')
-const { getBookList, getBookById, updateBookInfo, addBook, deleteBook, uploadCover } = require('../handler/bookHandler')
-const { idSchema, updateBookInfo_schema, addBook_schema } = require('../schema/bookSchema')
+const { getBookList, getBookById, updateBookInfo, addBook, deleteBook, uploadCover, getBookListByName, getBookByName } = require('../handler/bookHandler')
+const { idSchema, updateBookInfo_schema, addBook_schema, select_book_schema } = require('../schema/bookSchema')
 const upload = require('../middleware/upload')
 
 const router = express.Router()
@@ -10,6 +10,10 @@ const router = express.Router()
 router.get('/list', getBookList)
 // 按 id 获取图书信息
 router.get('/:id', expressJoi(idSchema), getBookById)
+// 按照分类id获取图书信息
+router.get('/booklist/:id', expressJoi(idSchema), getBookListByName)
+// 按照图书名称进行查询
+router.get('/bookname/:bookname', expressJoi(select_book_schema), getBookByName)
 // 修改图书信息
 router.post('/update', expressJoi(updateBookInfo_schema), updateBookInfo)
 // 新增图书信息

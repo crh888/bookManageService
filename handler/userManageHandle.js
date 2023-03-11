@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs')
 // 查看所有用户
 exports.userList = async (req, res) => {
   try {
-    const sql = 'SELECT id, account, nickname, avatar FROM account, userinfo WHERE account.identity < 2 AND account.is_delete = 0 AND account.id = userinfo.account_id'
+    const sql = 'SELECT id, account, nickname, identity FROM account, userinfo WHERE account.identity < 2 AND account.is_delete = 0 AND account.id = userinfo.account_id'
     const [results] = await db.query(sql)
     if (results.length === 0) res.cc('查询用户列表失败')
     res.send({
@@ -12,7 +12,23 @@ exports.userList = async (req, res) => {
       msg: 'success',
       data: results
     })
+  } catch (err) {
+    res.cc(err)
+  }
+}
 
+// 按照邮箱号码查询用户
+exports.userAccount = async (req, res) => {
+  try {
+    const sql = 'SELECT id, account, nickname, identity FROM account, userinfo WHERE account.account = ? AND account.identity < 2 AND account.is_delete = 0 AND account.id = userinfo.account_id'
+    const [results] = await db.query(sql, req.body.account)
+    console.log(results);
+    if (results.length === 0) return res.cc('该用户不存在')
+    res.send({
+      status: 0,
+      msg: 'success',
+      data: results[0]
+    })
   } catch (err) {
     res.cc(err)
   }
@@ -41,6 +57,7 @@ exports.addUser = async (req, res) => {
       id,
       account: req.body.account,
       password: req.body.password,
+      identity: req.body.identity
     }
     const inserRes = db.query(sql, theInfo)
     if (inserRes.affectedRows === 0) return res.cc('注册失败')
