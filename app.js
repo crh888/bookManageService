@@ -39,7 +39,7 @@ app.use(expressJWT({
   secret: secretKey,
   algorithms: ['HS256']
 }).unless({
-  path: [/^\/(api)|(avatar)|(cover)\//]
+  path: [/^\/(api)|(cover)|(avatar)\//]
 }))
 
 // 挂载静态路由（头像和封面）
